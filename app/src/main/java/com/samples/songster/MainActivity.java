@@ -1,5 +1,6 @@
 package com.samples.songster;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 
 import com.samples.songster.details.SongDetailsFragment;
 import com.samples.songster.search.SearchFragment;
+import com.samples.songster.settings.SettingsActivity;
 
 public class MainActivity extends ActionBarActivity implements SearchFragment.SearchFragmentListener {
 
@@ -55,6 +57,8 @@ public class MainActivity extends ActionBarActivity implements SearchFragment.Se
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 

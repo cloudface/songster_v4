@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.samples.songster.settings.SettingsViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Switch
+            android:id="@+id/editSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:checked="@{viewModel.editing}"
+            app:onCheckedChangeListener="@{viewModel.checkedChangedListener}"/>
+
+        <!--The view that is displayed if the user is simply viewing the settings
+            and not editing them-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/editSwitch"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.editing ? View.GONE : View.VISIBLE}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.user.firstName}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.user.lastName}" />
+        </LinearLayout>
+
+        <!--The view that is displayed when editing the settings-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/editSwitch"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.editing ? View.VISIBLE : View.GONE}">
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Enter first name"
+                android:text="@{viewModel.user.firstName}"
+                android:onTextChanged="@{viewModel.onFirstNameTextChanged}"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Enter last name"
+                android:text="@{viewModel.user.lastName}"
+                android:onTextChanged="@{viewModel.onLastNameTextChanged}"/>
+        </LinearLayout>
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{viewModel.loading ? View.VISIBLE : View.GONE}"
+            android:layout_centerInParent="true"/>
+    </RelativeLayout>
+
+</layout>

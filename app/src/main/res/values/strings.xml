@@ -10,4 +10,5 @@
     <string name="label.purchasesuccessful">Successfully purchased %1$s by %2$s!</string>
 
     <string name="hint.search">Search…</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 </resources>
