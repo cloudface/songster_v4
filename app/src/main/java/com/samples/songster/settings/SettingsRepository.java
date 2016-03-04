@@ -8,11 +8,33 @@ public interface SettingsRepository {
 
     void pause();
 
-    void saveUserSettings(UserModel userModel);
+    void saveUserSettings(UserModel userModel, SettingsRepositoryListener listener);
 
     void loadUserSettings(SettingsRepositoryListener listener);
 
     interface SettingsRepositoryListener {
         void onLoadedUserSettings(UserModel userModel);
+
+        void onSavedUserSettings();
+
+        void onFailedToSaveUserSettings();
+    }
+
+    abstract class SettingsRepositoryListenerAdapter implements SettingsRepositoryListener {
+
+        @Override
+        public void onLoadedUserSettings(UserModel userModel) {
+
+        }
+
+        @Override
+        public void onSavedUserSettings() {
+
+        }
+
+        @Override
+        public void onFailedToSaveUserSettings() {
+
+        }
     }
 }

@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.samples.songster.settings.events.LoadUserSettingsEvent;
 import com.samples.songster.settings.events.LoadedUserSettingsEvent;
+import com.samples.songster.settings.events.SaveUserSettingsEvent;
+import com.samples.songster.settings.events.SavedUserSettingsEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -27,8 +29,26 @@ public class PreferencesSettingsRepository implements SettingsRepository {
     }
 
     @Override
-    public void saveUserSettings(UserModel userModel) {
-        //TODO
+    public void saveUserSettings(UserModel userModel, SettingsRepositoryListener listener) {
+        EVENT_BUS.post(new SaveUserSettingsEvent(userModel, listener));
+    }
+
+    @Subscribe(threadMode = ThreadMode.ASYNC)
+    public void onSaveUserSettings(SaveUserSettingsEvent event){
+        try {
+            //Create some latency
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //TODO randomly generate an error
+        EVENT_BUS.post(new SavedUserSettingsEvent(event.getListener()));
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSavedUserSettings(SavedUserSettingsEvent event){
+        event.getListener().onSavedUserSettings();
     }
 
     @Override

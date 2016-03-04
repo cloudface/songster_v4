@@ -17,11 +17,23 @@ public class SettingsViewModel extends BaseObservable {
 
     @Bindable
     private boolean editing;
+
+    @Bindable
     private UserModel user;
+
+    @Bindable
+    private boolean settingsUpdated;
+
+    @Bindable
+    private boolean settingsUpdateSuccessful;
+
+    @Bindable
+    private String settingsUpdateMessage;
 
     private SettingsRepository mRepository;
 
     public SettingsViewModel(SettingsRepository repository){
+        user = new UserModel();
         mRepository = repository;
     }
 
@@ -31,6 +43,7 @@ public class SettingsViewModel extends BaseObservable {
 
     public void setUser(UserModel user) {
         this.user = user;
+        notifyPropertyChanged(BR.user);
     }
 
     public boolean isEditing() {
@@ -41,6 +54,42 @@ public class SettingsViewModel extends BaseObservable {
         this.editing = editing;
         notifyPropertyChanged(BR.editing);
         this.user.commitChanges();
+    }
+
+    public boolean isLoading() {
+        return loading;
+    }
+
+    public void setLoading(boolean loading) {
+        this.loading = loading;
+        notifyPropertyChanged(BR.loading);
+    }
+
+    public boolean isSettingsUpdated() {
+        return settingsUpdated;
+    }
+
+    public void setSettingsUpdated(boolean settingsUpdated) {
+        this.settingsUpdated = settingsUpdated;
+        notifyPropertyChanged(BR.settingsUpdated);
+    }
+
+    public boolean isSettingsUpdateSuccessful() {
+        return settingsUpdateSuccessful;
+    }
+
+    public void setSettingsUpdateSuccessful(boolean settingsUpdateSuccessful) {
+        this.settingsUpdateSuccessful = settingsUpdateSuccessful;
+        notifyPropertyChanged(BR.settingsUpdateSuccessful);
+    }
+
+    public String getSettingsUpdateMessage() {
+        return settingsUpdateMessage;
+    }
+
+    public void setSettingsUpdateMessage(String settingsUpdateMessage) {
+        this.settingsUpdateMessage = settingsUpdateMessage;
+        notifyPropertyChanged(BR.settingsUpdateMessage);
     }
 
     public void onResume(){
@@ -58,6 +107,10 @@ public class SettingsViewModel extends BaseObservable {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 setEditing(!isEditing());
+                if(!isChecked){
+                    mRepository.saveUserSettings(user, new SavedUserSettingsHandler());
+                    setSettingsUpdated(true);
+                }
             }
         };
     }
@@ -70,23 +123,26 @@ public class SettingsViewModel extends BaseObservable {
         user.setLastName(s.toString());
     }
 
-    public boolean isLoading() {
-        return loading;
-    }
-
-    public void setLoading(boolean loading) {
-        this.loading = loading;
-        notifyPropertyChanged(BR.loading);
-    }
-
-    private class LoadedUserSettingsHandler implements SettingsRepository.SettingsRepositoryListener {
+    private class LoadedUserSettingsHandler extends SettingsRepository.SettingsRepositoryListenerAdapter {
 
         @Override
         public void onLoadedUserSettings(UserModel userModel) {
-            user.setFirstName(userModel.getFirstName());
-            user.setLastName(userModel.getLastName());
-            user.commitChanges();
+            setUser(userModel);
             setLoading(false);
+        }
+    }
+
+    private class SavedUserSettingsHandler extends SettingsRepository.SettingsRepositoryListenerAdapter {
+
+        @Override
+        public void onSavedUserSettings() {
+            setSettingsUpdateSuccessful(true);
+            setSettingsUpdateMessage("Your settings have been saved.");
+        }
+
+        @Override
+        public void onFailedToSaveUserSettings() {
+            //TODO
         }
     }
 }
