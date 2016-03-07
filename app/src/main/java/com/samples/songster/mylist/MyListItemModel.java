@@ -5,6 +5,7 @@ package com.samples.songster.mylist;
  */
 public class MyListItemModel {
     private String someText;
+    private ItemType itemType;
 
     public String getSomeText() {
         return someText;
@@ -12,5 +13,18 @@ public class MyListItemModel {
 
     public void setSomeText(String someText) {
         this.someText = someText;
+    }
+
+    public ItemType getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(ItemType itemType) {
+        this.itemType = itemType;
+    }
+
+    public enum ItemType {
+        HEADER,
+        RESULT
     }
 }

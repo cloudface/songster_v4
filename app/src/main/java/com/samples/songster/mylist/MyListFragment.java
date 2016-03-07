@@ -38,12 +38,15 @@ public class MyListFragment extends Fragment {
 
         //Add some mock data
         MyListItemModel item1 = new MyListItemModel();
+        item1.setItemType(MyListItemModel.ItemType.HEADER);
         item1.setSomeText("Hello");
         mViewModel.getMyItems().add(item1);
         MyListItemModel item2 = new MyListItemModel();
+        item2.setItemType(MyListItemModel.ItemType.RESULT);
         item2.setSomeText("Nirvana");
         mViewModel.getMyItems().add(item2);
         MyListItemModel item3 = new MyListItemModel();
+        item3.setItemType(MyListItemModel.ItemType.RESULT);
         item3.setSomeText("Normal key");
         mViewModel.getMyItems().add(item3);
     }
