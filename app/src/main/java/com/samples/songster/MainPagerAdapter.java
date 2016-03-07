@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.samples.songster.mylist.MyListFragment;
 import com.samples.songster.search.SearchFragment;
 
 /**
@@ -16,11 +17,15 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return SearchFragment.getInstance();
+        if(position == 0) {
+            return SearchFragment.getInstance();
+        } else {
+            return MyListFragment.getInstance();
+        }
     }
 
     @Override
     public int getCount() {
-        return 1;
+        return 2;
     }
 }

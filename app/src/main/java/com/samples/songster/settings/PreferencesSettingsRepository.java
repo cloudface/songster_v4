@@ -1,7 +1,6 @@
 package com.samples.songster.settings;
 
-import android.util.Log;
-
+import com.samples.songster.settings.events.FailedToSaveUserSettingsEvent;
 import com.samples.songster.settings.events.LoadUserSettingsEvent;
 import com.samples.songster.settings.events.LoadedUserSettingsEvent;
 import com.samples.songster.settings.events.SaveUserSettingsEvent;
@@ -11,12 +10,19 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.Random;
+
 /**
  * Created by chrisbraunschweiler1 on 03/03/16.
  */
 public class PreferencesSettingsRepository implements SettingsRepository {
 
     private static final EventBus EVENT_BUS = EventBus.builder().eventInheritance(false).build();
+    private final Random mRandom;
+
+    public PreferencesSettingsRepository() {
+        mRandom = new Random();
+    }
 
     @Override
     public void start() {
@@ -34,7 +40,7 @@ public class PreferencesSettingsRepository implements SettingsRepository {
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
-    public void onSaveUserSettings(SaveUserSettingsEvent event){
+    public void onSaveUserSettings(SaveUserSettingsEvent event) {
         try {
             //Create some latency
             Thread.sleep(2000);
@@ -42,12 +48,22 @@ public class PreferencesSettingsRepository implements SettingsRepository {
             e.printStackTrace();
         }
 
-        //TODO randomly generate an error
-        EVENT_BUS.post(new SavedUserSettingsEvent(event.getListener()));
+        //50% chance of error. Just for fun.
+        int randomNumber = mRandom.nextInt(10);
+        if (randomNumber % 2 == 0) {
+            EVENT_BUS.post(new FailedToSaveUserSettingsEvent(event.getListener()));
+        } else {
+            EVENT_BUS.post(new SavedUserSettingsEvent(event.getListener()));
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onSavedUserSettings(SavedUserSettingsEvent event){
+    public void onFailedToSaveUserSettings(FailedToSaveUserSettingsEvent event){
+        event.getListener().onFailedToSaveUserSettings();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSavedUserSettings(SavedUserSettingsEvent event) {
         event.getListener().onSavedUserSettings();
     }
 

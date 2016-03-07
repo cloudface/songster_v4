@@ -109,7 +109,6 @@ public class SettingsViewModel extends BaseObservable {
                 setEditing(!isEditing());
                 if(!isChecked){
                     mRepository.saveUserSettings(user, new SavedUserSettingsHandler());
-                    setSettingsUpdated(true);
                 }
             }
         };
@@ -136,13 +135,16 @@ public class SettingsViewModel extends BaseObservable {
 
         @Override
         public void onSavedUserSettings() {
+            setSettingsUpdated(true);
             setSettingsUpdateSuccessful(true);
             setSettingsUpdateMessage("Your settings have been saved.");
         }
 
         @Override
         public void onFailedToSaveUserSettings() {
-            //TODO
+            setSettingsUpdated(true);
+            setSettingsUpdateSuccessful(false);
+            setSettingsUpdateMessage("Failed to save your settings :(. Please try again.");
         }
     }
 }
