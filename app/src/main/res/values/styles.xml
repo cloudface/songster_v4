@@ -21,7 +21,15 @@
         <item name="android:textSize">@dimen/size.medium</item>
     </style>
 
+    <style name="Widget.TextView.Bold.Medium" parent="Widget.TextView.Bold">
+        <item name="android:textSize">@dimen/size.medium</item>
+    </style>
+
     <style name="Widget.TextView.Regular.Medium.Dark" parent="Widget.TextView.Regular.Medium">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Widget.TextView.Bold.Medium.Dark" parent="Widget.TextView.Bold.Medium">
         <item name="android:textColor">@color/black</item>
     </style>
 
