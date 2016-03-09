@@ -17,7 +17,7 @@ import java.util.Random;
  */
 public class PreferencesSettingsRepository implements SettingsRepository {
 
-    private static final EventBus EVENT_BUS = EventBus.builder().eventInheritance(false).build();
+    private static final EventBus EVENT_BUS = EventBus.getDefault();
     private final Random mRandom;
 
     public PreferencesSettingsRepository() {
