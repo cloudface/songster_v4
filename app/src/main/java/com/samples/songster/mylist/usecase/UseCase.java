@@ -6,6 +6,10 @@ import com.samples.songster.search.repository.dto.SongDto;
  * Created by chrisbraunschweiler1 on 09/03/16.
  */
 public interface UseCase {
+    void start();
+
+    void pause();
+
     void purchaseSong(SongDto song);
 
     interface MyListUseCaseListener {

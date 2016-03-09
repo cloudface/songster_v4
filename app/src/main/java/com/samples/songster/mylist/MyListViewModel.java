@@ -65,12 +65,14 @@ public class MyListViewModel extends BaseObservable implements UseCase.MyListUse
 
     public void onResume(){
         mRepository.start();
+        mUseCase.start();
         setLoading(false);
         setDisplayInfoMessage(true);
     }
 
     public void onPause() {
         mRepository.pause();
+        mUseCase.pause();
     }
 
     public void onClickRefresh(View view){
