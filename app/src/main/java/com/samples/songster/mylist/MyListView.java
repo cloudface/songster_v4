@@ -5,4 +5,6 @@ package com.samples.songster.mylist;
  */
 public interface MyListView {
     void updateRecyclerView();
+
+    void showLoginView();
 }

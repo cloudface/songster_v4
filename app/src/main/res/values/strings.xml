@@ -12,5 +12,8 @@
     <string name="label.buy">Buy</string>
 
     <string name="hint.search">Search…</string>
+    <string name="hint.username">Enter username</string>
+    <string name="hint.password">Enter password</string>
+
     <string name="title_activity_settings">SettingsActivity</string>
 </resources>

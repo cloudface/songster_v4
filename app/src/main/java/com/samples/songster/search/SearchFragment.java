@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.samples.songster.R;
 import com.samples.songster.search.repository.SearchMockDataRepository;
-import com.samples.songster.search.repository.UserDataInMemoryRepository;
+import com.samples.songster.login.MockUserDataRepository;
 import com.samples.songster.search.repository.dto.SongDto;
 
 /**
@@ -79,7 +79,7 @@ public class SearchFragment extends Fragment implements SearchView {
             }
         }
 
-        mPresenter = new SearchPresenter(mViewModel, new SearchMockDataRepository(), new UserDataInMemoryRepository(), this);
+        mPresenter = new SearchPresenter(mViewModel, new SearchMockDataRepository(), new MockUserDataRepository(), this);
 
         configureRecyclerView();
 

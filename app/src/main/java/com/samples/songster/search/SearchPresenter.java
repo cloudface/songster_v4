@@ -3,12 +3,9 @@ package com.samples.songster.search;
 import android.support.v7.widget.helper.ItemTouchHelper;
 
 import com.samples.songster.search.repository.SearchRepository;
-import com.samples.songster.search.repository.UserDataRepository;
-import com.samples.songster.search.repository.dto.AuthorizationDto;
-import com.samples.songster.search.repository.dto.CheckoutDto;
+import com.samples.songster.login.UserDataRepository;
 import com.samples.songster.search.repository.dto.SearchResultDto;
 import com.samples.songster.search.repository.dto.SongDto;
-import com.samples.songster.search.repository.dto.UserDto;
 import com.samples.songster.search.usecase.SearchUseCase;
 import com.samples.songster.search.usecase.UseCase;
 

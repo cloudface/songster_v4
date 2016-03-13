@@ -1,9 +1,10 @@
-package com.samples.songster.search.repository.dto;
+package com.samples.songster.login;
 
 /**
  * Created by chrisbraunschweiler1 on 23/11/15.
  */
 public class UserDto {
+
     private String username;
     private String password;
 

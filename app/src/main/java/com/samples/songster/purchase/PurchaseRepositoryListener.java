@@ -3,7 +3,7 @@ package com.samples.songster.purchase;
 import com.samples.songster.search.repository.dto.AuthorizationDto;
 import com.samples.songster.search.repository.dto.CheckoutDto;
 import com.samples.songster.search.repository.dto.SongDto;
-import com.samples.songster.search.repository.dto.UserDto;
+import com.samples.songster.login.UserDto;
 
 /**
  * Created by chrisbraunschweiler1 on 09/03/16.

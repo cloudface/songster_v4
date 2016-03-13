@@ -3,7 +3,7 @@ package com.samples.songster.purchase;
 import com.samples.songster.search.repository.dto.AuthorizationDto;
 import com.samples.songster.search.repository.dto.CheckoutDto;
 import com.samples.songster.search.repository.dto.SongDto;
-import com.samples.songster.search.repository.dto.UserDto;
+import com.samples.songster.login.UserDto;
 
 /**
  * Created by chrisbraunschweiler1 on 09/03/16.
@@ -13,7 +13,7 @@ public class MockPurchaseRepository implements PurchaseRepository{
     @Override
     public void checkout(SongDto song, PurchaseRepositoryListener listener){
         CheckoutDto checkoutDto = new CheckoutDto();
-        checkoutDto.setLoginRequired(false);
+        checkoutDto.setLoginRequired(true);
         listener.onCheckoutSuccess(checkoutDto, song);
     }
 

@@ -9,7 +9,7 @@ import com.samples.songster.mylist.repository.MyListRepository;
 import com.samples.songster.mylist.usecase.MyListUseCase;
 import com.samples.songster.mylist.usecase.UseCase;
 import com.samples.songster.purchase.MockPurchaseRepository;
-import com.samples.songster.search.repository.UserDataInMemoryRepository;
+import com.samples.songster.login.MockUserDataRepository;
 import com.samples.songster.search.repository.dto.SongDto;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class MyListViewModel extends BaseObservable implements UseCase.MyListUse
 
     public MyListViewModel(MyListRepository repository, MyListView view){
         mRepository = repository;
-        mUseCase = new MyListUseCase(new MockPurchaseRepository(), new UserDataInMemoryRepository(), this);
+        mUseCase = new MyListUseCase(new MockPurchaseRepository(), new MockUserDataRepository(), this);
         mView = view;
         mMyItems = new ArrayList<>();
     }
@@ -83,7 +83,7 @@ public class MyListViewModel extends BaseObservable implements UseCase.MyListUse
 
     @Override
     public void showLoginView(SongDto songDto) {
-
+        mView.showLoginView();
     }
 
     @Override

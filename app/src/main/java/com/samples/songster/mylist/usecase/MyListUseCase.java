@@ -6,7 +6,7 @@ import com.samples.songster.mylist.usecase.events.ShowPurchaseSuccessMessageEven
 import com.samples.songster.purchase.PurchaseRepository;
 import com.samples.songster.purchase.PurchaseUseCase;
 import com.samples.songster.purchase.PurchaseUseCaseListener;
-import com.samples.songster.search.repository.UserDataRepository;
+import com.samples.songster.login.UserDataRepository;
 import com.samples.songster.search.repository.dto.SongDto;
 
 import org.greenrobot.eventbus.EventBus;
