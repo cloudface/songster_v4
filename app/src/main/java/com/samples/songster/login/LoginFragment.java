@@ -7,7 +7,6 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.samples.songster.R;
 import com.samples.songster.databinding.FragmentLoginBinding;
@@ -18,6 +17,7 @@ import com.samples.songster.databinding.FragmentLoginBinding;
 public class LoginFragment extends DialogFragment implements LoginView {
 
     private LoginViewModel mViewModel;
+    private LoginFragmentListener mListener;
 
     public static LoginFragment getInstance() {
         LoginFragment fragment = new LoginFragment();
@@ -32,6 +32,10 @@ public class LoginFragment extends DialogFragment implements LoginView {
         super.onCreate(args);
         //TODO retrieve arguments from bundle
         mViewModel = new LoginViewModel(new MockUserDataRepository(), this);
+        mListener = (LoginFragmentListener) getTargetFragment();
+        if (mListener == null) {
+            throw new IllegalStateException("Listener of " + LoginFragment.class.getSimpleName() + " cannot be null");
+        }
     }
 
     @Override
@@ -45,20 +49,19 @@ public class LoginFragment extends DialogFragment implements LoginView {
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         mViewModel.onResume();
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         mViewModel.onPause();
     }
 
     @Override
     public void onLoggedInSuccessfully(UserDto userDto) {
-        //TODO: inform listener that login has succeeded
-        Toast.makeText(getActivity(), "Logged in as: " + userDto.getUsername(), Toast.LENGTH_LONG).show();
+        mListener.onLoggedIn(userDto);
     }
 }

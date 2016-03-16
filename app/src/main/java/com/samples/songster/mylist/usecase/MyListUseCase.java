@@ -1,5 +1,6 @@
 package com.samples.songster.mylist.usecase;
 
+import com.samples.songster.login.UserDto;
 import com.samples.songster.mylist.usecase.events.PurchaseSongEvent;
 import com.samples.songster.mylist.usecase.events.ShowLoginViewEvent;
 import com.samples.songster.mylist.usecase.events.ShowPurchaseSuccessMessageEvent;
@@ -40,6 +41,11 @@ public class MyListUseCase implements UseCase, PurchaseUseCaseListener {
     @Override
     public void purchaseSong(SongDto song) {
         EVENT_BUS.post(new PurchaseSongEvent(song));
+    }
+
+    @Override
+    public void onLoggedIn(UserDto userDto, SongDto songToPurchase) {
+        mPurchaseUseCase.authorizePurchase(userDto, songToPurchase);
     }
 
     @Subscribe(threadMode = ThreadMode.ASYNC)

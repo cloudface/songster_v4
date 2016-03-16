@@ -25,6 +25,11 @@ public class PurchaseUseCase implements PurchaseRepositoryListener {
         mPurchaseRepository.checkout(song, this);
     }
 
+    public void authorizePurchase(UserDto user, SongDto song){
+        mPurchaseRepository.authorizePurchase(user, song, this);
+    }
+
+    @Deprecated
     public void login(String username, String password, SongDto songDto) {
         mPurchaseRepository.login(username, password, songDto, this);
     }

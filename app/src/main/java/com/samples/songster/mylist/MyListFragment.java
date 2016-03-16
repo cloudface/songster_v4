@@ -11,16 +11,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.samples.songster.R;
 import com.samples.songster.databinding.FragmentMylistBinding;
 import com.samples.songster.login.LoginFragment;
+import com.samples.songster.login.LoginFragmentListener;
+import com.samples.songster.login.UserDto;
 import com.samples.songster.mylist.repository.MyListMockRepository;
 
 /**
  * Created by chrisbraunschweiler1 on 04/03/16.
  */
-public class MyListFragment extends Fragment implements MyListView {
+public class MyListFragment extends Fragment implements MyListView, LoginFragmentListener {
 
     private static final String TAG_LOGIN_FRAGMENT = "LoginFragment";
     private RecyclerView mRecyclerView;
@@ -83,6 +86,17 @@ public class MyListFragment extends Fragment implements MyListView {
     public void showLoginView() {
         FragmentManager fm = getFragmentManager();
         LoginFragment loginFragment = LoginFragment.getInstance();
+        loginFragment.setTargetFragment(this, 0);
         loginFragment.show(fm, TAG_LOGIN_FRAGMENT);
+    }
+
+    @Override
+    public void onLoggedIn(UserDto user) {
+        LoginFragment loginFragment = (LoginFragment) getFragmentManager().findFragmentByTag(TAG_LOGIN_FRAGMENT);
+        if(loginFragment != null){
+            loginFragment.dismiss();
+        }
+        mViewModel.onLoggedIn(user);
+        Toast.makeText(getActivity(), "Logged in as " + user.getUsername(), Toast.LENGTH_LONG).show();
     }
 }

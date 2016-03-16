@@ -1,5 +1,6 @@
 package com.samples.songster.mylist.usecase;
 
+import com.samples.songster.login.UserDto;
 import com.samples.songster.search.repository.dto.SongDto;
 
 /**
@@ -11,6 +12,8 @@ public interface UseCase {
     void pause();
 
     void purchaseSong(SongDto song);
+
+    void onLoggedIn(UserDto userDto, SongDto songToPurchase);
 
     interface MyListUseCaseListener {
         void showLoginView(SongDto songDto);

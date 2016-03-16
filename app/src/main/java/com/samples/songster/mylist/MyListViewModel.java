@@ -5,6 +5,7 @@ import android.databinding.Bindable;
 import android.view.View;
 
 import com.samples.songster.BR;
+import com.samples.songster.login.UserDto;
 import com.samples.songster.mylist.repository.MyListRepository;
 import com.samples.songster.mylist.usecase.MyListUseCase;
 import com.samples.songster.mylist.usecase.UseCase;
@@ -29,6 +30,7 @@ public class MyListViewModel extends BaseObservable implements UseCase.MyListUse
     private MyListRepository mRepository;
     private UseCase mUseCase;
     private MyListView mView;
+    private MyListItemModel mItemBeingPurchased;
 
     public MyListViewModel(MyListRepository repository, MyListView view){
         mRepository = repository;
@@ -88,12 +90,14 @@ public class MyListViewModel extends BaseObservable implements UseCase.MyListUse
 
     @Override
     public void showPurchaseSuccsessMessage(SongDto song) {
-        for(MyListItemModel item : mMyItems){
-            if(item.getSong() != null && item.getSong().equals(song)){
-                item.setPurchased(true);
-                item.setBeingPurchased(false);
-            }
-        }
+        mItemBeingPurchased.setPurchased(true);
+        mItemBeingPurchased.setBeingPurchased(false);
+        mItemBeingPurchased = null;
+    }
+
+    public void onLoggedIn(UserDto user) {
+        SongDto songBeingPurchased = mItemBeingPurchased.getSong();
+        mUseCase.onLoggedIn(user, songBeingPurchased);
     }
 
     public class LoadedMyListHandler implements MyListRepository.MyListRepositoryListener, MyListItemModel.MyListItemModelListener {
@@ -121,10 +125,12 @@ public class MyListViewModel extends BaseObservable implements UseCase.MyListUse
 
         @Override
         public void onBuyItem(MyListItemModel item) {
-            //TODO start purchase workflow
-            if(item.getItemType() == MyListItemModel.ItemType.RESULT){
-                item.setBeingPurchased(true);
-                mUseCase.purchaseSong(item.getSong());
+            if(mItemBeingPurchased == null) {
+                mItemBeingPurchased = item;
+                if (item.getItemType() == MyListItemModel.ItemType.RESULT) {
+                    item.setBeingPurchased(true);
+                    mUseCase.purchaseSong(item.getSong());
+                }
             }
         }
     }
