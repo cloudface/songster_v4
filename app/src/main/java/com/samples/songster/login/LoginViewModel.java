@@ -7,6 +7,7 @@ import android.view.View;
 import com.samples.songster.BR;
 import com.samples.songster.login.events.LoggedInEvent;
 import com.samples.songster.login.events.LoginEvent;
+import com.samples.songster.login.events.LoginFailedEvent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -21,6 +22,8 @@ public class LoginViewModel extends BaseObservable{
     @Bindable
     private boolean mLoading;
 
+    @Bindable
+    private String mLoginErrorMessage;
     private UserDto mUser;
     private UserDataRepository mUserRepository;
     private LoginView mView;
@@ -46,7 +49,7 @@ public class LoginViewModel extends BaseObservable{
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onLogin(LoginEvent event){
-        mUserRepository.login(mUser.getUsername(), mUser.getPassword(), new LoginSuccessHandler());
+        mUserRepository.login(mUser.getUsername(), mUser.getPassword(), new LoginHandler());
     }
 
     public void onUsernameTextChanged(CharSequence s, int start, int before, int count) {
@@ -74,11 +77,25 @@ public class LoginViewModel extends BaseObservable{
         notifyPropertyChanged(BR.loading);
     }
 
-    public class LoginSuccessHandler implements UserDataRepositoryListener{
+    public String getLoginErrorMessage() {
+        return mLoginErrorMessage;
+    }
+
+    public void setLoginErrorMessage(String loginErrorMessage) {
+        this.mLoginErrorMessage = loginErrorMessage;
+        notifyPropertyChanged(BR.loginErrorMessage);
+    }
+
+    public class LoginHandler implements UserDataRepositoryListener{
 
         @Override
         public void onLoginSuccess(UserDto userDto) {
             EVENT_BUS.post(new LoggedInEvent(userDto));
+        }
+
+        @Override
+        public void onLoginFailed(String message) {
+            EVENT_BUS.post(new LoginFailedEvent(message));
         }
     }
 
@@ -86,5 +103,11 @@ public class LoginViewModel extends BaseObservable{
     public void onLoggedIn(LoggedInEvent event){
         setLoading(false);
         mView.onLoggedInSuccessfully(event.getPayload());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoginFailed(LoginFailedEvent event){
+        setLoading(false);
+        setLoginErrorMessage(event.getPayload());
     }
 }

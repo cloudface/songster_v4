@@ -29,8 +29,16 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="Widget.TextView.Regular.Medium.Red" parent="Widget.TextView.Regular.Medium">
+        <item name="android:textColor">@color/red</item>
+    </style>
+
     <style name="Widget.TextView.Bold.Medium.Dark" parent="Widget.TextView.Bold.Medium">
         <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="Widget.TextView.Bold.Medium.Red" parent="Widget.TextView.Bold.Medium">
+        <item name="android:textColor">@color/red</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

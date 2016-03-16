@@ -36,6 +36,14 @@
                 android:text="@{viewModel.user.password}"
                 android:onTextChanged="@{viewModel.onPasswordTextChanged}"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space.small"
+                android:text="@{viewModel.loginErrorMessage}"
+                tools:text="Incorrect username/password"
+                style="@style/Widget.TextView.Regular.Medium.Red"/>
+
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

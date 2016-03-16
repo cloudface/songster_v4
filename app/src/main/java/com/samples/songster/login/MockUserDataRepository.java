@@ -1,9 +1,17 @@
 package com.samples.songster.login;
 
+import java.util.Random;
+
 /**
  * Created by chrisbraunschweiler1 on 23/11/15.
  */
 public class MockUserDataRepository implements UserDataRepository {
+    private final Random mRandom;
+
+    public MockUserDataRepository(){
+        mRandom = new Random();
+    }
+
     @Override
     public boolean isLoggedIn() {
         return false;
@@ -18,10 +26,16 @@ public class MockUserDataRepository implements UserDataRepository {
             e.printStackTrace();
         }
 
-        UserDto userDto = new UserDto();
-        userDto.setUsername(username);
-        userDto.setPassword(password);
-        listener.onLoginSuccess(userDto);
+        //Randomly decide if the login succeeded or failed
+        int randomNumber = mRandom.nextInt(10);
+        if (randomNumber % 2 == 0) {
+            listener.onLoginFailed("Incorrect username/password");
+        } else {
+            UserDto userDto = new UserDto();
+            userDto.setUsername(username);
+            userDto.setPassword(password);
+            listener.onLoginSuccess(userDto);
+        }
     }
 
     @Override
