@@ -83,10 +83,6 @@ public class PreferencesSettingsRepository implements SettingsRepository {
 
         //Create mock user model. Retrieve it from preferences later.
         UserModel userModel = new UserModel();
-        userModel.setFirstName("Charles");
-        userModel.setLastName("Barkley");
-        userModel.setEmailAddress("smartbark@cocos.net");
-        userModel.setUsername("smartbark");
         EVENT_BUS.post(new LoadedUserSettingsEvent(userModel, event.getListener()));
     }
 

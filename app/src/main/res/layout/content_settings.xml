@@ -25,6 +25,30 @@
             android:checked="@{viewModel.editing}"
             app:onCheckedChangeListener="@{viewModel.checkedChangedListener}"/>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/space.medium"
+            android:orientation="vertical"
+            android:visibility="@{viewModel.userRegistered || viewModel.editing ? View.GONE : View.VISIBLE}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Please create a user account to purchase songs"
+                style="@style/Widget.TextView.Regular.Medium.Dark"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/space.small"
+                android:layout_gravity="center_horizontal"
+                android:text="Register"
+                android:onClick="@{viewModel.onStartRegistration}"/>
+        </LinearLayout>
+
         <!--The view that is displayed if the user is simply viewing the settings
             and not editing them-->
         <LinearLayout
@@ -32,7 +56,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/editSwitch"
             android:orientation="vertical"
-            android:visibility="@{viewModel.editing ? View.GONE : View.VISIBLE}">
+            android:visibility="@{(!viewModel.userRegistered) || viewModel.editing ? View.GONE : View.VISIBLE}">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -43,6 +67,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{viewModel.user.lastName}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.user.username}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.user.password}" />
         </LinearLayout>
 
         <!--The view that is displayed when editing the settings-->
@@ -66,6 +100,28 @@
                 android:hint="Enter last name"
                 android:text="@{viewModel.user.lastName}"
                 android:onTextChanged="@{viewModel.onLastNameTextChanged}"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Enter username"
+                android:text="@{viewModel.user.username}"
+                app:error="@{viewModel.usernameError}"
+                android:onTextChanged="@{viewModel.onUsernameTextChanged}"/>
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Enter password"
+                android:inputType="textPassword"
+                android:text="@{viewModel.user.password}"
+                android:onTextChanged="@{viewModel.onPasswordTextChanged}"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Save"
+                android:onClick="@{viewModel.onClickSave}"/>
         </LinearLayout>
 
         <!--The message displayed once settings have been saved-->
@@ -89,7 +145,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/space.small"
-                tools:text="Message update successful"
+                tools:text="Update successful"
                 android:text="@{viewModel.settingsUpdateMessage}"/>
         </LinearLayout>
 

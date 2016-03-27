@@ -2,7 +2,7 @@ package com.samples.songster.settings;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
-import android.util.Log;
+import android.view.View;
 import android.widget.CompoundButton;
 
 import com.samples.songster.BR;
@@ -11,6 +11,9 @@ import com.samples.songster.BR;
  * Created by chrisbraunschweiler1 on 29/02/16.
  */
 public class SettingsViewModel extends BaseObservable {
+
+    @Bindable
+    private boolean mUserRegistered;
 
     @Bindable
     private boolean loading;
@@ -29,6 +32,9 @@ public class SettingsViewModel extends BaseObservable {
 
     @Bindable
     private String settingsUpdateMessage;
+
+    @Bindable
+    private String mUsernameError;
 
     private SettingsRepository mRepository;
 
@@ -92,6 +98,24 @@ public class SettingsViewModel extends BaseObservable {
         notifyPropertyChanged(BR.settingsUpdateMessage);
     }
 
+    public boolean isUserRegistered() {
+        return mUserRegistered;
+    }
+
+    public void setUserRegistered(boolean userRegistered) {
+        this.mUserRegistered = userRegistered;
+        notifyPropertyChanged(BR.userRegistered);
+    }
+
+    public String getUsernameError() {
+        return mUsernameError;
+    }
+
+    public void setUsernameError(String usernameError) {
+        this.mUsernameError = usernameError;
+        notifyPropertyChanged(BR.usernameError);
+    }
+
     public void onResume(){
         setLoading(true);
         mRepository.start();
@@ -106,12 +130,12 @@ public class SettingsViewModel extends BaseObservable {
         return new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                setEditing(!isEditing());
-                if(!isChecked){
-                    mRepository.saveUserSettings(user, new SavedUserSettingsHandler());
-                }
             }
         };
+    }
+
+    public void onStartRegistration(View view) {
+        setEditing(true);
     }
 
     public void onFirstNameTextChanged(CharSequence s, int start, int before, int count) {
@@ -122,12 +146,36 @@ public class SettingsViewModel extends BaseObservable {
         user.setLastName(s.toString());
     }
 
+    public void onUsernameTextChanged(CharSequence s, int start, int before, int count) {
+        user.setUsername(s.toString());
+    }
+
+    public void onPasswordTextChanged(CharSequence s, int start, int before, int count) {
+        user.setPassword(s.toString());
+    }
+
+    public void onClickSave(View view) {
+        //Perform some validation (such as checking if user name empty or not)
+        if(user.getUsername() != null && !user.getUsername().isEmpty()){
+            setUsernameError(null);
+            setLoading(true);
+            mRepository.saveUserSettings(user, new SavedUserSettingsHandler());
+        } else {
+            setUsernameError("Please enter a username");
+        }
+    }
+
     private class LoadedUserSettingsHandler extends SettingsRepository.SettingsRepositoryListenerAdapter {
 
         @Override
         public void onLoadedUserSettings(UserModel userModel) {
             setUser(userModel);
             setLoading(false);
+            if(userModel.getUsername() != null){
+                setUserRegistered(true);
+            } else {
+                setUserRegistered(false);
+            }
         }
     }
 
@@ -135,6 +183,9 @@ public class SettingsViewModel extends BaseObservable {
 
         @Override
         public void onSavedUserSettings() {
+            setUserRegistered(true);
+            setLoading(false);
+            setEditing(false);
             setSettingsUpdated(true);
             setSettingsUpdateSuccessful(true);
             setSettingsUpdateMessage("Your settings have been saved.");
@@ -142,6 +193,7 @@ public class SettingsViewModel extends BaseObservable {
 
         @Override
         public void onFailedToSaveUserSettings() {
+            setLoading(false);
             setSettingsUpdated(true);
             setSettingsUpdateSuccessful(false);
             setSettingsUpdateMessage("Failed to save your settings :(. Please try again.");

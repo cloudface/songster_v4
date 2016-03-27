@@ -15,8 +15,12 @@ public class UserModel extends BaseObservable {
 
     @Bindable
     private String mLastName;
+
+    @Bindable
     private String mUsername;
-    private String mEmailAddress;
+
+    @Bindable
+    private String mPassword;
 
     public String getFirstName() {
         return mFirstName;
@@ -28,10 +32,6 @@ public class UserModel extends BaseObservable {
 
     public String getUsername() {
         return mUsername;
-    }
-
-    public String getEmailAddress() {
-        return mEmailAddress;
     }
 
     public void setFirstName(String firstName) {
@@ -46,12 +46,18 @@ public class UserModel extends BaseObservable {
         this.mUsername = username;
     }
 
-    public void setEmailAddress(String emailAddress) {
-        this.mEmailAddress = emailAddress;
-    }
-
     public void commitChanges() {
         notifyPropertyChanged(BR.firstName);
         notifyPropertyChanged(BR.lastName);
+        notifyPropertyChanged(BR.username);
+        notifyPropertyChanged(BR.password);
+    }
+
+    public String getPassword() {
+        return mPassword;
+    }
+
+    public void setPassword(String password) {
+        this.mPassword = password;
     }
 }
