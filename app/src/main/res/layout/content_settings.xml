@@ -16,14 +16,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Switch
-            android:id="@+id/editSwitch"
+        <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:checked="@{viewModel.editing}"
-            app:onCheckedChangeListener="@{viewModel.checkedChangedListener}"/>
+            android:padding="@dimen/space.medium"
+            android:background="@null"
+            android:src="@drawable/ic_mode_edit_black_24dp"
+            android:visibility="@{!viewModel.userRegistered || viewModel.editing ? View.GONE : View.VISIBLE}"
+            android:onClick="@{viewModel.onEditSettings}"/>
 
         <LinearLayout
             android:layout_width="wrap_content"

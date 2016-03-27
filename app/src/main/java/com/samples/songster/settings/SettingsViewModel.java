@@ -59,7 +59,6 @@ public class SettingsViewModel extends BaseObservable {
     public void setEditing(boolean editing) {
         this.editing = editing;
         notifyPropertyChanged(BR.editing);
-        this.user.commitChanges();
     }
 
     public boolean isLoading() {
@@ -126,14 +125,6 @@ public class SettingsViewModel extends BaseObservable {
         mRepository.pause();
     }
 
-    public CompoundButton.OnCheckedChangeListener getCheckedChangedListener() {
-        return new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            }
-        };
-    }
-
     public void onStartRegistration(View view) {
         setEditing(true);
     }
@@ -165,6 +156,10 @@ public class SettingsViewModel extends BaseObservable {
         }
     }
 
+    public void onEditSettings(View view) {
+        setEditing(true);
+    }
+
     private class LoadedUserSettingsHandler extends SettingsRepository.SettingsRepositoryListenerAdapter {
 
         @Override
@@ -189,6 +184,7 @@ public class SettingsViewModel extends BaseObservable {
             setSettingsUpdated(true);
             setSettingsUpdateSuccessful(true);
             setSettingsUpdateMessage("Your settings have been saved.");
+            user.commitChanges();
         }
 
         @Override
