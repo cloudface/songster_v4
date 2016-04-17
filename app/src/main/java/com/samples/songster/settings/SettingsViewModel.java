@@ -3,7 +3,6 @@ package com.samples.songster.settings;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.view.View;
-import android.widget.CompoundButton;
 
 import com.samples.songster.BR;
 
@@ -35,6 +34,9 @@ public class SettingsViewModel extends BaseObservable {
 
     @Bindable
     private String mUsernameError;
+
+    @Bindable
+    private String mPasswordError;
 
     private SettingsRepository mRepository;
 
@@ -115,6 +117,15 @@ public class SettingsViewModel extends BaseObservable {
         notifyPropertyChanged(BR.usernameError);
     }
 
+    public String getPasswordError() {
+        return mPasswordError;
+    }
+
+    public void setPasswordError(String passwordError) {
+        this.mPasswordError = passwordError;
+        notifyPropertyChanged(BR.passwordError);
+    }
+
     public void onResume(){
         setLoading(true);
         mRepository.start();
@@ -147,12 +158,19 @@ public class SettingsViewModel extends BaseObservable {
 
     public void onClickSave(View view) {
         //Perform some validation (such as checking if user name empty or not)
-        if(user.getUsername() != null && !user.getUsername().isEmpty()){
+        if(user.getUsername() != null && !user.getUsername().isEmpty() &&
+            user.getPassword() != null && !user.getPassword().isEmpty()){
             setUsernameError(null);
+            setPasswordError(null);
             setLoading(true);
             mRepository.saveUserSettings(user, new SavedUserSettingsHandler());
-        } else {
-            setUsernameError("Please enter a username");
+        } else{
+            if(user.getUsername() == null || user.getUsername().isEmpty()){
+                setUsernameError("Please enter a username");
+            }
+            if(user.getPassword() == null || user.getPassword().isEmpty()){
+                setPasswordError("Please enter a password");
+            }
         }
     }
 
