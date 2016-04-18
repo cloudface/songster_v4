@@ -2,6 +2,8 @@ package com.samples.songster.mylist;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.View;
 
 import com.samples.songster.BR;
@@ -10,7 +12,7 @@ import com.samples.songster.search.repository.dto.SongDto;
 /**
  * Created by chrisbraunschweiler1 on 07/03/16.
  */
-public class MyListItemModel extends BaseObservable{
+public class MyListItemModel extends BaseObservable implements Parcelable {
     private String mTitle;
     private SongDto mSong;
     private ItemType mItemType;
@@ -81,4 +83,39 @@ public class MyListItemModel extends BaseObservable{
     public interface MyListItemModelListener {
         void onBuyItem(MyListItemModel item);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.mTitle);
+        dest.writeParcelable(this.mSong, flags);
+        dest.writeInt(this.mItemType == null ? -1 : this.mItemType.ordinal());
+        dest.writeByte(mBeingPurchased ? (byte) 1 : (byte) 0);
+        dest.writeByte(purchased ? (byte) 1 : (byte) 0);
+    }
+
+    protected MyListItemModel(Parcel in) {
+        this.mTitle = in.readString();
+        this.mSong = in.readParcelable(SongDto.class.getClassLoader());
+        int tmpMItemType = in.readInt();
+        this.mItemType = tmpMItemType == -1 ? null : ItemType.values()[tmpMItemType];
+        this.mBeingPurchased = in.readByte() != 0;
+        this.purchased = in.readByte() != 0;
+    }
+
+    public static final Parcelable.Creator<MyListItemModel> CREATOR = new Parcelable.Creator<MyListItemModel>() {
+        @Override
+        public MyListItemModel createFromParcel(Parcel source) {
+            return new MyListItemModel(source);
+        }
+
+        @Override
+        public MyListItemModel[] newArray(int size) {
+            return new MyListItemModel[size];
+        }
+    };
 }

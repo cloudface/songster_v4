@@ -17,14 +17,19 @@ import com.samples.songster.R;
 import com.samples.songster.databinding.FragmentMylistBinding;
 import com.samples.songster.login.LoginFragment;
 import com.samples.songster.login.LoginFragmentListener;
+import com.samples.songster.login.MockUserDataRepository;
 import com.samples.songster.login.UserDto;
 import com.samples.songster.mylist.repository.MyListMockRepository;
+import com.samples.songster.search.SearchPresenter;
+import com.samples.songster.search.SearchViewModel;
+import com.samples.songster.search.repository.SearchMockDataRepository;
 
 /**
  * Created by chrisbraunschweiler1 on 04/03/16.
  */
 public class MyListFragment extends Fragment implements MyListView, LoginFragmentListener {
 
+    private static final String KEY_VIEW_MODEL = "com.samples.songster.mylist.MyListFragment.ViewModel";
     private static final String TAG_LOGIN_FRAGMENT = "LoginFragment";
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager;
@@ -37,6 +42,27 @@ public class MyListFragment extends Fragment implements MyListView, LoginFragmen
         //TODO pass arguments into bundle
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(KEY_VIEW_MODEL, mViewModel);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            //probably orientation change
+            mViewModel = savedInstanceState.getParcelable(KEY_VIEW_MODEL);
+            if(mViewModel != null) {
+                mViewModel.setView(this);
+            }
+        }
+
+        configureRecyclerView();
     }
 
     @Override
@@ -53,7 +79,6 @@ public class MyListFragment extends Fragment implements MyListView, LoginFragmen
         binding.setViewModel(mViewModel);
         View view = binding.getRoot();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.myListRecyclerView);
-        configureRecyclerView();
         return view;
     }
 

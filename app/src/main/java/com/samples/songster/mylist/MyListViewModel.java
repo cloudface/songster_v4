@@ -2,6 +2,8 @@ package com.samples.songster.mylist;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.View;
 
 import com.samples.songster.BR;
@@ -19,7 +21,7 @@ import java.util.List;
 /**
  * Created by chrisbraunschweiler1 on 04/03/16.
  */
-public class MyListViewModel extends BaseObservable implements UseCase.MyListUseCaseListener {
+public class MyListViewModel extends BaseObservable implements UseCase.MyListUseCaseListener, Parcelable {
 
     @Bindable
     private boolean mDisplayInfoMessage;
@@ -68,8 +70,10 @@ public class MyListViewModel extends BaseObservable implements UseCase.MyListUse
     public void onResume(){
         mRepository.start();
         mUseCase.start();
-        setLoading(false);
-        setDisplayInfoMessage(true);
+        if(mMyItems == null || mMyItems.size() == 0){
+            setLoading(false);
+            setDisplayInfoMessage(true);
+        }
     }
 
     public void onPause() {
@@ -98,6 +102,10 @@ public class MyListViewModel extends BaseObservable implements UseCase.MyListUse
     public void onLoggedIn(UserDto user) {
         SongDto songBeingPurchased = mItemBeingPurchased.getSong();
         mUseCase.onLoggedIn(user, songBeingPurchased);
+    }
+
+    public void setView(MyListView view){
+        this.mView = view;
     }
 
     public class LoadedMyListHandler implements MyListRepository.MyListRepositoryListener, MyListItemModel.MyListItemModelListener {
@@ -134,4 +142,36 @@ public class MyListViewModel extends BaseObservable implements UseCase.MyListUse
             }
         }
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte(mDisplayInfoMessage ? (byte) 1 : (byte) 0);
+        dest.writeByte(mLoading ? (byte) 1 : (byte) 0);
+        dest.writeTypedList(mMyItems);
+        dest.writeParcelable(this.mItemBeingPurchased, flags);
+    }
+
+    protected MyListViewModel(Parcel in) {
+        this.mDisplayInfoMessage = in.readByte() != 0;
+        this.mLoading = in.readByte() != 0;
+        this.mMyItems = in.createTypedArrayList(MyListItemModel.CREATOR);
+        this.mItemBeingPurchased = in.readParcelable(MyListItemModel.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<MyListViewModel> CREATOR = new Parcelable.Creator<MyListViewModel>() {
+        @Override
+        public MyListViewModel createFromParcel(Parcel source) {
+            return new MyListViewModel(source);
+        }
+
+        @Override
+        public MyListViewModel[] newArray(int size) {
+            return new MyListViewModel[size];
+        }
+    };
 }
