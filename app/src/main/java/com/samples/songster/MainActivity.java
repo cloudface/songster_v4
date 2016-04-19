@@ -5,13 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.samples.songster.details.SongDetailsFragment;
-import com.samples.songster.search.SearchFragment;
-import com.samples.songster.settings.SettingsActivity;
+import com.samples.songster.presentation.details.SongDetailsFragment;
+import com.samples.songster.presentation.search.SearchFragment;
+import com.samples.songster.presentation.settings.SettingsActivity;
 
 public class MainActivity extends ActionBarActivity implements SearchFragment.SearchFragmentListener {
 

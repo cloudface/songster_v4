@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.samples.songster.settings.SettingsViewModel" />
+            type="com.samples.songster.presentation.settings.SettingsViewModel" />
 
         <import type="android.view.View" />
     </data>

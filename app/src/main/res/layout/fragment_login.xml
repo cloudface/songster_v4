@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.samples.songster.login.LoginViewModel" />
+            type="com.samples.songster.presentation.login.LoginViewModel" />
 
         <import type="android.view.View" />
     </data>

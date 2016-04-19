@@ -1,12 +1,10 @@
-package com.samples.songster.search;
+package com.samples.songster.presentation.search;
 
-import com.samples.songster.search.repository.SearchRepository;
-import com.samples.songster.search.repository.dto.SearchResultDto;
-import com.samples.songster.search.repository.dto.SongDto;
+import com.samples.songster.dal.search.SearchRepository;
+import com.samples.songster.dal.search.dto.SearchResultDto;
+import com.samples.songster.dal.search.dto.SongDto;
 
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyString;
