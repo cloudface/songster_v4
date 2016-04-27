@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.samples.songster.R;
+import com.samples.songster.dal.mylist.MyListRealmRepository;
 import com.samples.songster.databinding.FragmentMylistBinding;
 import com.samples.songster.presentation.login.LoginFragment;
 import com.samples.songster.presentation.login.LoginFragmentListener;
@@ -64,7 +65,8 @@ public class MyListFragment extends Fragment implements MyListView, LoginFragmen
     public void onCreate(Bundle args) {
         super.onCreate(args);
         //TODO retrieve arguments from bundle
-        mViewModel = new MyListViewModel(new MyListMockRepository(), this);
+        //mViewModel = new MyListViewModel(new MyListMockRepository(), this);
+        mViewModel = new MyListViewModel(new MyListRealmRepository(getActivity()), this);
     }
 
     @Override

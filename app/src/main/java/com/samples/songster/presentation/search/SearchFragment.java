@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.samples.songster.R;
 import com.samples.songster.dal.search.SearchMockDataRepository;
 import com.samples.songster.dal.login.MockUserDataRepository;
+import com.samples.songster.dal.search.SearchRealmMockDataRepository;
 import com.samples.songster.dal.search.dto.SongDto;
 
 /**
@@ -79,7 +80,7 @@ public class SearchFragment extends Fragment implements SearchView {
             }
         }
 
-        mPresenter = new SearchPresenter(mViewModel, new SearchMockDataRepository(), new MockUserDataRepository(), this);
+        mPresenter = new SearchPresenter(mViewModel, new SearchRealmMockDataRepository(getActivity()), new MockUserDataRepository(), this);
 
         configureRecyclerView();
 
@@ -136,6 +137,18 @@ public class SearchFragment extends Fragment implements SearchView {
             throw new ClassCastException(activity.toString()
                     + " must implement " + SearchFragmentListener.class.getSimpleName());
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mPresenter.onPause();
     }
 
     @Override

@@ -44,6 +44,16 @@ public class SearchUseCase implements UseCase, SearchRepository.SearchListener {
     }
 
     @Override
+    public void onResume() {
+        mSearchRepository.start();
+    }
+
+    @Override
+    public void onPause() {
+        mSearchRepository.pause();
+    }
+
+    @Override
     public void onSearchSuccess(SearchResultDto result) {
         mListener.onSearchSuccess(result);
     }

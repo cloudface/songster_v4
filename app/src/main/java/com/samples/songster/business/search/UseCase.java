@@ -15,6 +15,10 @@ public interface UseCase {
 
     void addSongToMyList(SongDto selectedSong);
 
+    void onResume();
+
+    void onPause();
+
     interface UseCaseListener {
 
         void showLoginView(SongDto songDto);

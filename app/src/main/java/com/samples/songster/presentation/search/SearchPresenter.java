@@ -91,4 +91,12 @@ public class SearchPresenter implements UseCase.UseCaseListener {
     public void login(String username, String password) {
         mUseCase.login(username, password, mViewModel.getSongToBePurchased());
     }
+
+    public void onResume() {
+        mUseCase.onResume();
+    }
+
+    public void onPause() {
+        mUseCase.onPause();
+    }
 }

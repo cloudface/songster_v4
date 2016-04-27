@@ -8,10 +8,23 @@ import com.samples.songster.dal.search.dto.SearchResultDto;
 import com.samples.songster.dal.search.dto.SongDto;
 import com.samples.songster.dal.login.UserDto;
 
+import org.greenrobot.eventbus.EventBus;
+
 /**
  * Created by chrisbraunschweiler1 on 30/11/15.
  */
 public class SearchMockDataRepository implements SearchRepository {
+    protected static final EventBus EVENT_BUS = EventBus.getDefault();
+
+    @Override
+    public void start(){
+        EVENT_BUS.register(this);
+    }
+
+    @Override
+    public void pause(){
+        EVENT_BUS.unregister(this);
+    }
 
     @Override
     public void search(String searchString, SearchListener listener) {

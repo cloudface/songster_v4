@@ -11,6 +11,10 @@ import com.samples.songster.dal.login.UserDto;
  */
 public interface SearchRepository {
 
+    void start();
+
+    void pause();
+
     void search(String searchString, SearchListener listener);
 
     void addSongToMyList(SongDto song, SearchListener listener);
