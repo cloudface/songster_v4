@@ -16,11 +16,9 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        ActivitySettingsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        ActivitySettingsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_settings);
         viewModel = new SettingsViewModel(new PreferencesSettingsRepository());
         binding.setViewModel(viewModel);
     }
