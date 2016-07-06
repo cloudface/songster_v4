@@ -46,6 +46,12 @@ public class MyListRealmRepository implements MyListRepository {
 
     @Subscribe(threadMode = ThreadMode.ASYNC)
     public void onLoadMyList(LoadMyListEvent event){
+        try {
+            //Create some latency
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Realm realm = Realm.getInstance(mRealmConfig);
         RealmResults<RealmSong> allSongs = realm.allObjects(RealmSong.class);
         List<SongDto> songDtos = new ArrayList<>();
